@@ -1,0 +1,21 @@
+
+src/
+ ├── app/
+ │    ├── core/
+ │    │    ├── guards/
+ │    │    ├── interceptors/
+ │    │    ├── models/
+ │    │    ├── services/
+ │    │    └── shared/
+ │    ├── features/
+ │    │    ├── auth/
+ │    │    ├── profile/
+ │    │    ├── subscriptions/
+ │    │    ├── articles/
+ │    │    └── comments/
+ │    ├── app-routing.module.ts
+ │    ├── app.component.ts
+ │    └── app.module.ts
+ ├── assets/
+ ├── environments/
+ ├── styles.scss
