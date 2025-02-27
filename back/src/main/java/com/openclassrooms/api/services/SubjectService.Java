@@ -2,7 +2,9 @@ package com.openclassrooms.api.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.openclassrooms.api.repositories.SubjectRepository;
+import com.openclassrooms.api.dto.SubjectDTO;
+import com.openclassrooms.api.models.Subject;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,20 +22,11 @@ public class SubjectService {
         List<Long> subscribedSubjectIds = subscriptionRepository.findSubjectIdsByUserId(userId);
 
         // Récupérer les sujets correspondants
-        List<Subject> subjects = subjectRepository.findAllById(subscribedSubjectIds);
+        List<Subject> subjects = subjectRepository.findAllById(subscribedSubjectIds); // OK
 
         // Convertir les sujets en DTO
         return subjects.stream()
-                .map(this::convertToDTO)
+                .map(SubjectDTO::new) // Utilisation du constructeur de SubjectDTO
                 .collect(Collectors.toList());
-    }
-
-    private SubjectDTO convertToDTO(Subject subject) {
-        SubjectDTO dto = new SubjectDTO();
-        dto.setId(subject.getId());
-        dto.setName(subject.getName());
-        dto.setDescription(subject.getDescription());
-        dto.setCreatedAt(subject.getCreatedAt());
-        return dto;
     }
 }

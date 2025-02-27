@@ -98,36 +98,5 @@ public class UserService {
         return UserDTO.fromEntity(user);
     }
 
-    private List<Subject> getSubscriptionsForUser(Long userId) {
-        return subscriptionRepository.findSubjectsByUserId(userId);
-    }
-
-    // public UserWithSubscriptionsDTO getCurrentUserWithSubscriptions(String email) {
-    //     User user = userRepository.findByEmail(email)
-    //         .orElseThrow(() -> new RuntimeException("User not found"));
-
-    //     // Récupérer les abonnements de l'utilisateur
-    //     List<Subject> userSubscriptions = getSubscriptionsForUser(user.getId());
-
-    //     // Convertir les sujets en DTOs
-    //     List<SubjectDTO> subjectDTOs = userSubscriptions.stream()
-    //         .map(subject -> new SubjectDTO(
-    //             subject.getId(),
-    //             subject.getName(),
-    //             subject.getDescription()))
-    //         .collect(Collectors.toList());
-
-    //     return new UserWithSubscriptionsDTO(
-    //         user.getId(),
-    //         user.getEmail(),
-    //         user.getName(),
-    //         user.getRole(),
-    //         user.getCreated_at(),
-    //         user.getUpdated_at(),
-    //         subjectDTOs
-    //     );
-    // }
-
-
 }
 

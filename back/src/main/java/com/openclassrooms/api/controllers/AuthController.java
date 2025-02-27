@@ -12,7 +12,7 @@ import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.dto.UserDTO;
 import com.openclassrooms.api.models.ErrorResponse;
 import com.openclassrooms.api.services.UserService;
-import com.openclassrooms.api.services.SubjectService;
+// import com.openclassrooms.api.services.SubjectService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -122,11 +122,11 @@ public class AuthController {
         return ResponseEntity.ok(user);
     }
 
-    @GetMapping("/subscriptions/{userId}")
-    public ResponseEntity<List<SubjectDTO>> getSubscribedSubjects(@PathVariable Long userId) {
-        List<SubjectDTO> subjects = SubjectService.getSubscribedSubjects(userId);
-        return ResponseEntity.ok(subjects);
-    }
+    // @GetMapping("/subscriptions/{userId}")
+    // public ResponseEntity<List<SubjectDTO>> getSubscribedSubjects(@PathVariable Long userId) {
+    //     List<SubjectDTO> subjects = SubjectService.getSubscribedSubjects(userId);
+    //     return ResponseEntity.ok(subjects);
+    // }
 }
 
 
