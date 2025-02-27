@@ -9,25 +9,34 @@ import jakarta.persistence.Embeddable;
 public class SubscriptionId implements Serializable {
 
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
 
     @Column(name = "subject_id")
-    private Integer subjectId;
+    private Long subjectId;
+
+    // Constructeur par défaut (nécessaire pour JPA)
+    public SubscriptionId() {}
+
+    // Nouveau constructeur
+    public SubscriptionId(Long userId, Long subjectId) {
+        this.userId = userId;
+        this.subjectId = subjectId;
+    }
 
     // Getters and Setters
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
-    public Integer getSubjectId() {
+    public Long getSubjectId() {
         return subjectId;
     }
 
-    public void setSubjectId(Integer subjectId) {
+    public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
     }
 }

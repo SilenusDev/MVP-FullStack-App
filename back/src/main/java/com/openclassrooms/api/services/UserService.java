@@ -7,25 +7,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.dto.UserDTO;
-// import com.openclassrooms.api.dto.UserWithSubscriptionsDTO;
 import com.openclassrooms.api.models.User;
-import com.openclassrooms.api.models.Subject;
 import com.openclassrooms.api.repositories.UserRepository;
 import com.openclassrooms.api.repositories.SubjectRepository;
 import com.openclassrooms.api.repositories.SubscriptionRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     @Autowired
-    private SubjectRepository subjectRepository;
+    // private SubjectRepository subjectRepository;
 
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;

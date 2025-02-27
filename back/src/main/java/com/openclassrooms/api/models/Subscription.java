@@ -23,6 +23,11 @@ public class Subscription {
     @JoinColumn(name = "subject_id", insertable = false, updatable = false)
     private Subject subject;
 
+    public Subscription(SubscriptionId id, Subject subject) {
+        this.id = id;
+        this.subject = subject;
+    }
+
     // Getters and Setters
     public SubscriptionId getId() {
         return id;

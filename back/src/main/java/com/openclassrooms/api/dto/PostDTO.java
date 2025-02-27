@@ -1,29 +1,14 @@
-package com.openclassrooms.api.models;
+package com.openclassrooms.api.dto;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "posts")
-public class Post {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class PostDTO {
     private Long id;
-
-    private String title; // Ajout du champ title
-
+    private String title;
     private String content;
-
     private LocalDateTime createdAt;
-
-    @ManyToOne
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
-
-    @ManyToOne
-    @JoinColumn(name = "author_id")
-    private User author;
+    private Long subjectId;
+    private Long authorId;
 
     // Getters and Setters
     public Long getId() {
@@ -58,19 +43,20 @@ public class Post {
         this.createdAt = createdAt;
     }
 
-    public Subject getSubject() {
-        return subject;
+    public Long getSubjectId() {
+        return subjectId;
     }
 
-    public void setSubject(Subject subject) {
-        this.subject = subject;
+    public void setSubjectId(Long subjectId) {
+        this.subjectId = subjectId;
     }
 
-    public User getAuthor() {
-        return author;
+    public Long getAuthorId() {
+        return authorId;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 }
+

@@ -1,0 +1,1 @@
+http://localhost:3001/swagger-ui/index.html#/subject-controller/getAllSubjects

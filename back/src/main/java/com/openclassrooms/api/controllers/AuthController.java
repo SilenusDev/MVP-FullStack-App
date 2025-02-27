@@ -50,7 +50,7 @@ public class AuthController {
             schema = @Schema(implementation = RegisterRequest.class),
             examples = @ExampleObject(
                 name = "Register Example",
-                value = "{\"name\": \"test\", \"email\": \"test@user.com\", \"password\": \"user1234\"}"
+                value = "{\"name\": \"user\", \"email\": \"user@user.com\", \"password\": \"user1234\"}"
             )
         )
     ) RegisterRequest request) {
@@ -121,12 +121,6 @@ public class AuthController {
         UserDTO user = userService.getCurrentUser(authentication.getName());
         return ResponseEntity.ok(user);
     }
-
-    // @GetMapping("/subscriptions/{userId}")
-    // public ResponseEntity<List<SubjectDTO>> getSubscribedSubjects(@PathVariable Long userId) {
-    //     List<SubjectDTO> subjects = SubjectService.getSubscribedSubjects(userId);
-    //     return ResponseEntity.ok(subjects);
-    // }
 }
 
 
