@@ -1,9 +1,9 @@
 -- Étape 1 : Insertion des utilisateurs
-INSERT INTO `users` (`name`, `email`, `password`, `role`, `created_At`, `updated_At`) VALUES
+INSERT INTO `users` (`name`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES
 ('user', 'user@user.com', '$2a$10$ioInQ2jPOzoSp1n9roTUE.AAYootj3PuK0DGn2gqln0VcAGYk2PFi', 'USER', '2025-01-23 14:43:55', '2025-01-23 14:43:55');
 
 -- Étape 2 : Insertion des sujets
-INSERT INTO `subjects` (`name`, `description`, `created_At`) VALUES
+INSERT INTO `subjects` (`name`, `description`, `created_at`) VALUES
 ('Java', 'Discussions sur le langage de programmation Java', '2023-01-15 09:00:00'),
 ('Spring Boot', 'Discussions sur le framework Spring Boot', '2023-02-15 10:00:00'),
 ('Javascript', 'Discussions sur le langage de programmation JavaScript', '2023-03-15 11:00:00'),

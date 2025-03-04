@@ -50,7 +50,7 @@ public class AuthController {
             schema = @Schema(implementation = RegisterRequest.class),
             examples = @ExampleObject(
                 name = "Register Example",
-                value = "{\"name\": \"user\", \"email\": \"user@user.com\", \"password\": \"user1234\"}"
+                value = "{\"name\": \"user\", \"email\": \"test@user.com\", \"password\": \"user1234\"}"
             )
         )
     ) RegisterRequest request) {
@@ -91,7 +91,7 @@ public class AuthController {
             schema = @Schema(implementation = LoginRequestDTO.class),
             examples = @ExampleObject(
                 name = "Login Example",
-                value = "{\"email\": \"test@user.com\", \"password\": \"user1234\"}"
+                value = "{\"email\": \"user@user.com\", \"password\": \"user1234\"}"
             )
         )
     ) LoginRequestDTO credentials) {

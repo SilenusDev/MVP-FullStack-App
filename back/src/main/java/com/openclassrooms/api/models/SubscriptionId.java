@@ -1,9 +1,8 @@
 package com.openclassrooms.api.models;
 
 import jakarta.persistence.Column;
-import java.io.Serializable;
 import jakarta.persistence.Embeddable;
-
+import java.io.Serializable;
 
 @Embeddable
 public class SubscriptionId implements Serializable {

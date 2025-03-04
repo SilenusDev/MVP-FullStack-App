@@ -23,16 +23,6 @@ public class SubscriptionService {
     @Autowired
     private SubscriptionRepository subscriptionRepository;
 
-    // /**
-    //  * Récupère la liste des sujets disponibles sous forme de DTO.
-    //  */
-    // public List<SubjectDTO> getAllSubjects() {
-    //     return subjectRepository.findAll()
-    //             .stream()
-    //             .map(SubjectDTO::new)
-    //             .collect(Collectors.toList());
-    // }
-
     /**
      * Récupère les sujets auxquels l'utilisateur est abonné.
      */
@@ -40,6 +30,16 @@ public class SubscriptionService {
         return subscriptionRepository.findByUserId(userId)
                 .stream()
                 .map(subscription -> new SubjectDTO(subscription.getSubject()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * Récupère la liste des sujets disponibles sous forme de DTO.
+     */
+    public List<SubjectDTO> getAllSubjects() {
+        return subjectRepository.findAll()
+                .stream()
+                .map(SubjectDTO::new)
                 .collect(Collectors.toList());
     }
 

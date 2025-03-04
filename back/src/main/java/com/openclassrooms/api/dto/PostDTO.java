@@ -7,8 +7,8 @@ public class PostDTO {
     private String title;
     private String content;
     private LocalDateTime createdAt;
-    private Long subjectId;
-    private Long authorId;
+    private UserDTO author;
+    private SubjectDTO subject;
 
     // Getters and Setters
     public Long getId() {
@@ -43,20 +43,20 @@ public class PostDTO {
         this.createdAt = createdAt;
     }
 
-    public Long getSubjectId() {
-        return subjectId;
+    public UserDTO getAuthor() {
+        return author;
     }
 
-    public void setSubjectId(Long subjectId) {
-        this.subjectId = subjectId;
+    public void setAuthor(UserDTO author) {
+        this.author = author;
     }
 
-    public Long getAuthorId() {
-        return authorId;
+    public SubjectDTO getSubject() {
+        return subject;
     }
 
-    public void setAuthorId(Long authorId) {
-        this.authorId = authorId;
+    public void setSubject(SubjectDTO subject) {
+        this.subject = subject;
     }
 }
 

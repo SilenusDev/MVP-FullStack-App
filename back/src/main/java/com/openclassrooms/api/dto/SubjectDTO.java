@@ -1,35 +1,21 @@
 package com.openclassrooms.api.dto;
 
-import java.time.LocalDateTime;
 import com.openclassrooms.api.models.Subject;
 
 public class SubjectDTO {
-
-    private Long id; // Correction: passer à Long
     private String name;
     private String description;
-    private LocalDateTime createdAt;
 
-    // Constructeur avec un Subject
-    public SubjectDTO(Subject subject) {
-        this.id = subject.getId();
-        this.name = subject.getName();
-        this.description = subject.getDescription();
-        this.createdAt = subject.getCreatedAt();
-    }
-
-    // Constructeur par défaut (nécessaire pour Jackson)
+    // Constructeur par défaut
     public SubjectDTO() {}
 
-    // Getters et Setters
-    public Long getId() {
-        return id;
+    // Constructeur qui accepte un objet Subject
+    public SubjectDTO(Subject subject) {
+        this.name = subject.getName();
+        this.description = subject.getDescription();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    // Getters and Setters
     public String getName() {
         return name;
     }
@@ -45,12 +31,5 @@ public class SubjectDTO {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }
+
