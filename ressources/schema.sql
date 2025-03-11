@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
 
 CREATE TABLE IF NOT EXISTS `posts` (
   `id` bigint NOT NULL AUTO_INCREMENT,
-  `content` varchar(255) DEFAULT NULL,
+  `content` varchar(500) DEFAULT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   `subject_id` bigint DEFAULT NULL,
   `author_id` bigint DEFAULT NULL,
