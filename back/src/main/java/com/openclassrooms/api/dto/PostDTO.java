@@ -1,6 +1,7 @@
 package com.openclassrooms.api.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class PostDTO {
     private Long id;

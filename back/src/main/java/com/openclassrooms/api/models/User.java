@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "USERS")
 public class User {
@@ -12,10 +14,17 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonIgnore
     private String email;
+
     private String name;
+
+    @JsonIgnore
     private String password;
+
+    @JsonIgnore
     private String role;
+    
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
@@ -28,9 +37,26 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Subscription> subscriptions;
 
+    @ManyToMany
+    @JoinTable(
+        name = "user_subject",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "subject_id")
+    )
+    private List<Subject> subscribedSubjects;
+    
     // Constructeur vide nécessaire pour JPA
     public User() {
     }
+
+    public List<Subject> getSubscribedSubjects() {
+        return subscribedSubjects;
+    }
+
+    public void setSubscribedSubjects(List<Subject> subscribedSubjects) {
+        this.subscribedSubjects = subscribedSubjects;
+    }
+    
 
     // Getters et Setters
     public Long getId() {

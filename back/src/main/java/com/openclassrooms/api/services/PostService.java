@@ -1,11 +1,14 @@
 package com.openclassrooms.api.services;
 
+import com.openclassrooms.api.dto.CommentDTO;
 import com.openclassrooms.api.dto.PostDTO;
 import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.dto.UserDTO;
+import com.openclassrooms.api.models.Comment;
 import com.openclassrooms.api.models.Post;
 import com.openclassrooms.api.models.Subject;
 import com.openclassrooms.api.models.User;
+import com.openclassrooms.api.repositories.CommentRepository;
 import com.openclassrooms.api.repositories.PostRepository;
 import com.openclassrooms.api.repositories.SubjectRepository;
 import com.openclassrooms.api.repositories.UserRepository;
@@ -15,7 +18,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +36,9 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     public List<PostDTO> getAllPosts() {
         return postRepository.findAll()
                 .stream()
@@ -42,19 +51,85 @@ public class PostService {
         return convertToDTO(post);
     }
 
+    // public PostDTO getPostById(Long postId) {
+    //     // Récupérer le post avec ses informations de base
+    //     Post post = postRepository.findById(postId)
+    //                 .orElseThrow(() -> new RuntimeException("Post not found"));
+        
+    //     // Récupérer les IDs des commentaires liés au post
+    //     Optional<Map<String, Object>> postWithCommentIdsOpt = postRepository.findOnePostByIdWithComments(postId);
+        
+    //     // Créer le DTO à partir du post
+    //     PostDTO postDTO = new PostDTO();
+    //     postDTO.setId(post.getId());
+    //     postDTO.setTitle(post.getTitle());
+    //     postDTO.setContent(post.getContent());
+    //     postDTO.setCreatedAt(post.getCreatedAt());
+        
+    //     // Ajouter les informations de l'auteur
+    //     if (post.getAuthor() != null) {
+    //         postDTO.setAuthor(UserDTO.fromEntity(post.getAuthor()));
+    //     }
+        
+    //     // Ajouter les informations du sujet
+    //     if (post.getSubject() != null) {
+    //         SubjectDTO subjectDTO = new SubjectDTO();
+    //         subjectDTO.setId(post.getSubject().getId());
+    //         subjectDTO.setName(post.getSubject().getName());
+    //         subjectDTO.setDescription(post.getSubject().getDescription());
+    //         postDTO.setSubject(subjectDTO);
+    //     }
+        
+    //     // Ajouter les commentaires s'ils existent
+    //     List<CommentDTO> commentDTOs = new ArrayList<>();
+        
+    //     if (postWithCommentIdsOpt.isPresent()) {
+    //         Map<String, Object> postData = postWithCommentIdsOpt.get();
+    //         String commentIdsStr = (String) postData.get("comment_ids");
+            
+    //         if (commentIdsStr != null && !commentIdsStr.isEmpty()) {
+    //             String[] commentIds = commentIdsStr.split(",");
+                
+    //             for (String commentIdStr : commentIds) {
+    //                 Long commentId = Long.parseLong(commentIdStr);
+                    
+    //                 // Récupérer chaque commentaire avec son auteur
+    //                 Optional<Comment> commentOpt = commentRepository.findCommentByIdWithAuthor(commentId);
+                    
+    //                 if (commentOpt.isPresent()) {
+    //                     Comment comment = commentOpt.get();
+                        
+    //                     // Créer le DTO du commentaire
+    //                     CommentDTO commentDTO = new CommentDTO();
+    //                     commentDTO.setId(comment.getId());
+    //                     commentDTO.setContent(comment.getContent());
+    //                     commentDTO.setCreatedAt(comment.getCreatedAt());
+                        
+    //                     // Ajouter uniquement le nom de l'auteur
+    //                     if (comment.getAuthor() != null) {
+    //                         commentDTO.setAuthorName(comment.getAuthor().getName());
+    //                     }
+                        
+    //                     commentDTOs.add(commentDTO);
+    //                 }
+    //             }
+    //         }
+    //     }
+        
+    //     postDTO.setComments(commentDTOs);
+    //     return postDTO;
+    // }
     public List<PostDTO> getPostsByUserSubscription(Long userId) {
-        System.out.println("------------------------------------------------------------------------------------------------------");
-        System.out.println("enter in getPostsByUserSubscription");
+
         List<Object[]> results = postRepository.findPostsByUserSubscription(userId);
-        //affichher le userId
-        System.out.println("userId: " + userId);
+
         // afficher les résultats
         results.forEach(result -> {
             for (Object o : result) {
-                System.out.println("post: " + o);
+
             }
         });
-        System.out.println("------------------------------------------------------------------------------------------------------");
+
         return results.stream().map(this::mapToPostDTO).collect(Collectors.toList());
     }
 

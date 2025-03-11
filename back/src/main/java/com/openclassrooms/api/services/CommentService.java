@@ -1,6 +1,7 @@
 package com.openclassrooms.api.services;
 
 import com.openclassrooms.api.dto.CommentDTO;
+import com.openclassrooms.api.dto.CommentsResponseDTO;
 import com.openclassrooms.api.models.Comment;
 import com.openclassrooms.api.models.Post;
 import com.openclassrooms.api.models.User;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -24,6 +27,13 @@ public class CommentService {
     
     @Autowired
     private UserRepository userRepository;
+
+    public List<CommentsResponseDTO> findCommentsByPostID(Long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        return comments.stream()
+                .map(comment -> new CommentsResponseDTO(comment.getContent(), comment.getAuthor().getName()))
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     public CommentDTO createComment(CommentDTO commentDTO) {

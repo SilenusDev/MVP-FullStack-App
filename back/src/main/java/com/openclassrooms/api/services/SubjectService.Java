@@ -21,7 +21,7 @@ public class SubjectService {
     public List<SubjectDTO> getAllSubjects() {
         return subjectRepository.findAll()
                 .stream()
-                .map(SubjectDTO::new)
+                .map(SubjectDTO::fromEntity) // Utilisation de la méthode fromEntity
                 .collect(Collectors.toList());
     }
 }

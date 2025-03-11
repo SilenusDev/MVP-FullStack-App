@@ -5,21 +5,9 @@ import java.time.LocalDateTime;
 public class CommentDTO {
     private Long id;
     private String content;
-    private Long post_id;
-    private Long author_id;
     private LocalDateTime createdAt;
-
-    // Constructeurs
-    public CommentDTO() {
-    }
-
-    public CommentDTO(Long id, String content, Long post_id, Long author_id, LocalDateTime createdAt) {
-        this.id = id;
-        this.content = content;
-        this.post_id = post_id;
-        this.author_id = author_id;
-        this.createdAt = createdAt;
-    }
+    private Long author_id;  // ID de l'auteur
+    private Long post_id;    // ID du post
 
     // Getters et Setters
     public Long getId() {
@@ -38,12 +26,12 @@ public class CommentDTO {
         this.content = content;
     }
 
-    public Long getPost_id() {
-        return post_id;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setPost_id(Long post_id) {
-        this.post_id = post_id;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getAuthor_id() {
@@ -54,11 +42,11 @@ public class CommentDTO {
         this.author_id = author_id;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public Long getPost_id() {
+        return post_id;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setPost_id(Long post_id) {
+        this.post_id = post_id;
     }
 }

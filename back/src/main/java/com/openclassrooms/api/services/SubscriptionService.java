@@ -4,8 +4,11 @@ import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.models.Subject;
 import com.openclassrooms.api.models.Subscription;
 import com.openclassrooms.api.models.SubscriptionId;
+import com.openclassrooms.api.models.User;
 import com.openclassrooms.api.repositories.SubjectRepository;
 import com.openclassrooms.api.repositories.SubscriptionRepository;
+import com.openclassrooms.api.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,13 +26,17 @@ public class SubscriptionService {
     @Autowired
     private SubscriptionRepository subscriptionRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+
     /**
      * Récupère les sujets auxquels l'utilisateur est abonné.
      */
     public List<SubjectDTO> getSubscribedSubjects(Long userId) {
         return subscriptionRepository.findByUserId(userId)
                 .stream()
-                .map(subscription -> new SubjectDTO(subscription.getSubject()))
+                .map(subscription -> SubjectDTO.fromEntity(subscription.getSubject()))
                 .collect(Collectors.toList());
     }
 
@@ -39,44 +46,40 @@ public class SubscriptionService {
     public List<SubjectDTO> getAllSubjects() {
         return subjectRepository.findAll()
                 .stream()
-                .map(SubjectDTO::new)
+                .map(SubjectDTO::fromEntity)
                 .collect(Collectors.toList());
     }
 
     /**
-     * Permet à un utilisateur de s'abonner à un sujet.
+     * Abonne un utilisateur à un sujet.
      */
     public void subscribe(Long userId, Long subjectId) {
-        // Convertit subjectId en Long pour éviter l'erreur
-        Subject subject = subjectRepository.findById(subjectId.longValue())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sujet non trouvé"));
-    
-        // Vérifie si l'utilisateur est déjà abonné
-        if (subscriptionRepository.existsByUserIdAndSubjectId(userId, subjectId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'utilisateur est déjà abonné");
+        // Vérifie si l'utilisateur existe
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        
+        // Vérifie si le sujet existe
+        Subject subject = subjectRepository.findById(subjectId).orElseThrow(() -> new RuntimeException("Subject not found"));
+
+        // Vérifie si l'utilisateur est déjà abonné au sujet
+        boolean alreadySubscribed = subscriptionRepository.existsByUserIdAndSubjectId(userId, subjectId);
+        if (alreadySubscribed) {
+            throw new RuntimeException("User is already subscribed to this subject");
         }
-    
-        Subscription subscription = new Subscription(new SubscriptionId(userId, subjectId), subject);
+
+        // Crée une nouvelle souscription
+        Subscription subscription = new Subscription(user, subject);
         subscriptionRepository.save(subscription);
     }
-    
 
     /**
-     * Permet à un utilisateur de se désabonner d'un sujet.
+     * Désabonne un utilisateur d'un sujet.
      */
     public void unsubscribe(Long userId, Long subjectId) {
-        // Vérifie si l'utilisateur est bien abonné avant de supprimer
-        if (!subscriptionRepository.existsByUserIdAndSubjectId(userId, subjectId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "L'utilisateur n'est pas abonné à ce sujet");
-        }
+        // Vérifie si l'utilisateur est abonné au sujet
+        Subscription subscription = subscriptionRepository.findByUserIdAndSubjectId(userId, subjectId)
+                .orElseThrow(() -> new RuntimeException("User is not subscribed to this subject"));
 
-        subscriptionRepository.deleteByUserIdAndSubjectId(userId, subjectId);
-    }
-
-    /**
-     * Vérifie si un utilisateur est abonné à un sujet.
-     */
-    public boolean isSubscribed(Long userId, Long subjectId) {
-        return subscriptionRepository.existsByUserIdAndSubjectId(userId, subjectId);
+        // Supprime la souscription
+        subscriptionRepository.delete(subscription);
     }
 }

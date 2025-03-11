@@ -1,28 +1,23 @@
 package com.openclassrooms.api.models;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 public class SubscriptionId implements Serializable {
 
-    @Column(name = "user_id")
     private Long userId;
-
-    @Column(name = "subject_id")
     private Long subjectId;
 
-    // Constructeur par défaut (nécessaire pour JPA)
-    public SubscriptionId() {}
+    public SubscriptionId() {
+    }
 
-    // Nouveau constructeur
     public SubscriptionId(Long userId, Long subjectId) {
         this.userId = userId;
         this.subjectId = subjectId;
     }
 
-    // Getters and Setters
     public Long getUserId() {
         return userId;
     }
@@ -38,4 +33,26 @@ public class SubscriptionId implements Serializable {
     public void setSubjectId(Long subjectId) {
         this.subjectId = subjectId;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SubscriptionId that = (SubscriptionId) o;
+        return Objects.equals(userId, that.userId) && Objects.equals(subjectId, that.subjectId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, subjectId);
+    }
+
+    @Override
+    public String toString() {
+        return "SubscriptionId{" +
+                "userId=" + userId +
+                ", subjectId=" + subjectId +
+                '}';
+    }
 }
+

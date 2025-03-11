@@ -1,30 +1,52 @@
+// src/main/java/com/openclassrooms/api/dto/UserDTO.java
 package com.openclassrooms.api.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.openclassrooms.api.models.User;
+import com.openclassrooms.api.models.Subscription;
 
 public class UserDTO {
+    private Long id;
     private String name;
     private String email;
     private LocalDateTime createdAt;
+    private List<SubjectDTO> subscribedSubjects;
 
-    // Constructeur par défaut
     public UserDTO() {}
 
-    // Constructeur privé pour créer une instance de UserDTO à partir d'un User
-    private UserDTO(User user) {
-        this.name = user.getName();
-        this.email = user.getEmail();
-        this.createdAt = user.getCreated_at();
-    }
-
-    // Méthode statique pour créer un UserDTO à partir d'un User
+    // Ajoutez cette méthode statique pour transformer un User en UserDTO
     public static UserDTO fromEntity(User user) {
-        return new UserDTO(user);
+        UserDTO dto = new UserDTO();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setCreatedAt(user.getCreated_at());
+        
+        // Récupérer les sujets abonnés
+        if (user.getSubscriptions() != null) {
+            dto.setSubscribedSubjects(
+                user.getSubscriptions().stream()
+                    .map(subscription -> SubjectDTO.fromEntity(subscription.getSubject()))
+                    .collect(Collectors.toList())
+            );
+        }
+        
+        return dto;
     }
 
-    // Getters and Setters
+    // Getters et Setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -47,6 +69,14 @@ public class UserDTO {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<SubjectDTO> getSubscribedSubjects() {
+        return subscribedSubjects;
+    }
+
+    public void setSubscribedSubjects(List<SubjectDTO> subscribedSubjects) {
+        this.subscribedSubjects = subscribedSubjects;
     }
 }
 

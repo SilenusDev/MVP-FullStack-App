@@ -10,19 +10,25 @@ public class Subscription {
     private SubscriptionId id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
+    @MapsId("userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "subject_id", insertable = false, updatable = false)
+    @MapsId("subjectId")
+    @JoinColumn(name = "subject_id")
     private Subject subject;
 
-    public Subscription(SubscriptionId id, Subject subject) {
-        this.id = id;
+    public Subscription() {
+        this.id = new SubscriptionId();
+    }
+
+    public Subscription(User user, Subject subject) {
+        this.id = new SubscriptionId(user.getId(), subject.getId());
+        this.user = user;
         this.subject = subject;
     }
 
-    // Getters and Setters
     public SubscriptionId getId() {
         return id;
     }
@@ -37,6 +43,7 @@ public class Subscription {
 
     public void setUser(User user) {
         this.user = user;
+        this.id.setUserId(user.getId());
     }
 
     public Subject getSubject() {
@@ -45,6 +52,15 @@ public class Subscription {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+        this.id.setSubjectId(subject.getId());
+    }
+
+    @Override
+    public String toString() {
+        return "Subscription{" +
+                "id=" + id +
+                ", user=" + user +
+                ", subject=" + subject +
+                '}';
     }
 }
-

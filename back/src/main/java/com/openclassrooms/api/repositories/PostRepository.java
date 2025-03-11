@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
@@ -20,11 +22,10 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 "WHERE sub.user.id = :userId")
     List<Object[]> findPostsByUserSubscription(@Param("userId") Long userId);
 
-    // @Query(value = "SELECT p.*, s.*, u.*" +
-    //                "FROM posts p " +
-    //                "JOIN subscriptions sub ON p.subject_id = sub.subject_id " +
-    //                "JOIN subjects s ON p.subject_id = s.id " +
-    //                "JOIN users u ON p.author_id = u.id " +
-    //                "WHERE sub.user_id = :userId", nativeQuery = true)
-    // List<Object[]>  findPostsByUserSubscription(@Param("userId") Long userId);
+    // @Query(value = "SELECT p.id, p.title, p.content, p.created_at, " +
+    //                     "(SELECT GROUP_CONCAT(c.id) FROM comments c WHERE c.post_id = p.id) AS comment_ids " +
+    //                     "FROM posts p " +
+    //                     "WHERE p.id = :postId", nativeQuery = true)
+    // Optional<Map<String, Object>> findOnePostByIdWithComments(@Param("postId") Long postId);
+    
 }

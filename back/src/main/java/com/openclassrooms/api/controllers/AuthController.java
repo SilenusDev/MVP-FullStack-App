@@ -11,6 +11,7 @@ import com.openclassrooms.api.dto.RegisterResponseDTO;
 import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.dto.UserDTO;
 import com.openclassrooms.api.models.ErrorResponse;
+import com.openclassrooms.api.models.User;
 import com.openclassrooms.api.services.UserService;
 // import com.openclassrooms.api.services.SubjectService;
 
@@ -24,6 +25,8 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -118,8 +121,24 @@ public class AuthController {
     })
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getCurrentUser(Authentication authentication) {
-        UserDTO user = userService.getCurrentUser(authentication.getName());
-        return ResponseEntity.ok(user);
+        // Récupérer l'email de l'utilisateur authentifié
+        String email = authentication.getName();
+        
+        // Récupérer l'utilisateur à partir de l'email
+        Optional<User> userOptional = userService.findByEmail(email);
+        
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            
+            // Transformer l'utilisateur en UserDTO
+            UserDTO userDTO = UserDTO.fromEntity(user);
+            
+            // Retourner la réponse avec le UserDTO
+            return ResponseEntity.ok(userDTO);
+        } else {
+            // Si l'utilisateur n'est pas trouvé, retourner une erreur 404
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
 

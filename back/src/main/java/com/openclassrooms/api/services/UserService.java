@@ -7,25 +7,35 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.dto.UserDTO;
+import com.openclassrooms.api.dto.UserUpdateDTO;
+import com.openclassrooms.api.models.Subject;
 import com.openclassrooms.api.models.User;
 import com.openclassrooms.api.repositories.UserRepository;
 import com.openclassrooms.api.repositories.SubjectRepository;
 import com.openclassrooms.api.repositories.SubscriptionRepository;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
 
     @Autowired
-    // private SubjectRepository subjectRepository;
+    private SubjectRepository subjectRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepository;
+    // private final UserRepository userRepository;
     private final SubscriptionRepository subscriptionRepository; // Ajout de la dépendance
 
     public UserService(AuthenticationManager authenticationManager,
@@ -89,9 +99,84 @@ public class UserService {
     }
 
     public UserDTO getCurrentUser(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
-        return UserDTO.fromEntity(user);
+
+        // Récupérer l'utilisateur
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> {
+                System.out.println("Utilisateur non trouvé pour l'email : " + email);
+                return new RuntimeException("User not found");
+            });
+
+    
+        // Récupérer les IDs des sujets
+        Map<String, Object> userMap = userRepository.findUserWithSubscribedSubjectIds(user.getId())
+            .orElseThrow(() -> new RuntimeException("Sujets non trouvés pour l'utilisateur avec ID: " + user.getId()));
+  
+
+        
+        // Accéder à la chaîne contenant les IDs
+        String subscribedSubjectIds = (String) userMap.get("subscribed_subject_ids");
+ 
+    
+        // Convertir les IDs de sujets en une liste de SubjectDTO
+        List<SubjectDTO> subscribedSubjects = 
+            Arrays.stream(subscribedSubjectIds.split(","))
+                  .map((String id) -> {
+                      Subject subject = subjectRepository.findById(Long.parseLong(id)).orElse(null);
+                      System.out.println("Subject trouvé pour ID : " + id + " -> " + subject);
+                      return subject;
+                  })
+                  .filter(subject -> subject != null) // Ignorer les sujets non trouvés
+                  .map(SubjectDTO::fromEntity)
+                  .collect(Collectors.toList());
+        
+    
+        // Créer et retourner un DTO de l'utilisateur
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
+        userDTO.setName(user.getName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setCreatedAt(user.getCreated_at());
+        userDTO.setSubscribedSubjects(subscribedSubjects);
+    
+        return userDTO;
+    }
+    
+    
+
+    // Assure-toi que cette méthode existe bien
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
+    public Optional<UserUpdateDTO> updateUser(UserUpdateDTO userUpdateDTO) {
+        System.out.println("________________________________________________________________________");
+        System.out.println("Tentative de mise à jour de l'utilisateur avec l'ID : " + userUpdateDTO.getId());
+
+        Optional<User> userOptional = userRepository.findById(userUpdateDTO.getId());
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            System.out.println("Utilisateur trouvé : " + user);
+
+            user.setName(userUpdateDTO.getName());
+            user.setEmail(userUpdateDTO.getEmail());
+
+            try {
+                userRepository.save(user);
+                System.out.println("________________________________________________________________________");
+                System.out.println("Utilisateur mis à jour avec succès : " + user);
+                return Optional.of(userUpdateDTO);
+            } catch (Exception e) {
+                System.out.println("________________________________________________________________________");
+                System.err.println("Erreur lors de la mise à jour de l'utilisateur : " + e.getMessage());
+                throw e; // ou retournez une Optional.empty() selon votre logique
+            }
+        } else {
+            System.out.println("________________________________________________________________________");
+            System.out.println("Utilisateur non trouvé avec l'ID : " + userUpdateDTO.getId());
+            return Optional.empty();
+        }
+    }
 }
 
