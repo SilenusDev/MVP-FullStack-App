@@ -103,7 +103,6 @@ public class UserService {
         // Récupérer l'utilisateur
         User user = userRepository.findByEmail(email)
             .orElseThrow(() -> {
-                System.out.println("Utilisateur non trouvé pour l'email : " + email);
                 return new RuntimeException("User not found");
             });
 
@@ -123,7 +122,6 @@ public class UserService {
             Arrays.stream(subscribedSubjectIds.split(","))
                   .map((String id) -> {
                       Subject subject = subjectRepository.findById(Long.parseLong(id)).orElse(null);
-                      System.out.println("Subject trouvé pour ID : " + id + " -> " + subject);
                       return subject;
                   })
                   .filter(subject -> subject != null) // Ignorer les sujets non trouvés
@@ -150,31 +148,24 @@ public class UserService {
     }
 
     public Optional<UserUpdateDTO> updateUser(UserUpdateDTO userUpdateDTO) {
-        System.out.println("________________________________________________________________________");
-        System.out.println("Tentative de mise à jour de l'utilisateur avec l'ID : " + userUpdateDTO.getId());
 
         Optional<User> userOptional = userRepository.findById(userUpdateDTO.getId());
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            System.out.println("Utilisateur trouvé : " + user);
+
 
             user.setName(userUpdateDTO.getName());
             user.setEmail(userUpdateDTO.getEmail());
 
             try {
                 userRepository.save(user);
-                System.out.println("________________________________________________________________________");
-                System.out.println("Utilisateur mis à jour avec succès : " + user);
                 return Optional.of(userUpdateDTO);
             } catch (Exception e) {
-                System.out.println("________________________________________________________________________");
-                System.err.println("Erreur lors de la mise à jour de l'utilisateur : " + e.getMessage());
+
                 throw e; // ou retournez une Optional.empty() selon votre logique
             }
         } else {
-            System.out.println("________________________________________________________________________");
-            System.out.println("Utilisateur non trouvé avec l'ID : " + userUpdateDTO.getId());
             return Optional.empty();
         }
     }

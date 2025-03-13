@@ -21,11 +21,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 "JOIN p.author u " +
                 "WHERE sub.user.id = :userId")
     List<Object[]> findPostsByUserSubscription(@Param("userId") Long userId);
-
-    // @Query(value = "SELECT p.id, p.title, p.content, p.created_at, " +
-    //                     "(SELECT GROUP_CONCAT(c.id) FROM comments c WHERE c.post_id = p.id) AS comment_ids " +
-    //                     "FROM posts p " +
-    //                     "WHERE p.id = :postId", nativeQuery = true)
-    // Optional<Map<String, Object>> findOnePostByIdWithComments(@Param("postId") Long postId);
-    
+   
 }
