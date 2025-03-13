@@ -51,74 +51,6 @@ public class PostService {
         return convertToDTO(post);
     }
 
-    // public PostDTO getPostById(Long postId) {
-    //     // Récupérer le post avec ses informations de base
-    //     Post post = postRepository.findById(postId)
-    //                 .orElseThrow(() -> new RuntimeException("Post not found"));
-        
-    //     // Récupérer les IDs des commentaires liés au post
-    //     Optional<Map<String, Object>> postWithCommentIdsOpt = postRepository.findOnePostByIdWithComments(postId);
-        
-    //     // Créer le DTO à partir du post
-    //     PostDTO postDTO = new PostDTO();
-    //     postDTO.setId(post.getId());
-    //     postDTO.setTitle(post.getTitle());
-    //     postDTO.setContent(post.getContent());
-    //     postDTO.setCreatedAt(post.getCreatedAt());
-        
-    //     // Ajouter les informations de l'auteur
-    //     if (post.getAuthor() != null) {
-    //         postDTO.setAuthor(UserDTO.fromEntity(post.getAuthor()));
-    //     }
-        
-    //     // Ajouter les informations du sujet
-    //     if (post.getSubject() != null) {
-    //         SubjectDTO subjectDTO = new SubjectDTO();
-    //         subjectDTO.setId(post.getSubject().getId());
-    //         subjectDTO.setName(post.getSubject().getName());
-    //         subjectDTO.setDescription(post.getSubject().getDescription());
-    //         postDTO.setSubject(subjectDTO);
-    //     }
-        
-    //     // Ajouter les commentaires s'ils existent
-    //     List<CommentDTO> commentDTOs = new ArrayList<>();
-        
-    //     if (postWithCommentIdsOpt.isPresent()) {
-    //         Map<String, Object> postData = postWithCommentIdsOpt.get();
-    //         String commentIdsStr = (String) postData.get("comment_ids");
-            
-    //         if (commentIdsStr != null && !commentIdsStr.isEmpty()) {
-    //             String[] commentIds = commentIdsStr.split(",");
-                
-    //             for (String commentIdStr : commentIds) {
-    //                 Long commentId = Long.parseLong(commentIdStr);
-                    
-    //                 // Récupérer chaque commentaire avec son auteur
-    //                 Optional<Comment> commentOpt = commentRepository.findCommentByIdWithAuthor(commentId);
-                    
-    //                 if (commentOpt.isPresent()) {
-    //                     Comment comment = commentOpt.get();
-                        
-    //                     // Créer le DTO du commentaire
-    //                     CommentDTO commentDTO = new CommentDTO();
-    //                     commentDTO.setId(comment.getId());
-    //                     commentDTO.setContent(comment.getContent());
-    //                     commentDTO.setCreatedAt(comment.getCreatedAt());
-                        
-    //                     // Ajouter uniquement le nom de l'auteur
-    //                     if (comment.getAuthor() != null) {
-    //                         commentDTO.setAuthorName(comment.getAuthor().getName());
-    //                     }
-                        
-    //                     commentDTOs.add(commentDTO);
-    //                 }
-    //             }
-    //         }
-    //     }
-        
-    //     postDTO.setComments(commentDTOs);
-    //     return postDTO;
-    // }
     public List<PostDTO> getPostsByUserSubscription(Long userId) {
 
         List<Object[]> results = postRepository.findPostsByUserSubscription(userId);
@@ -138,25 +70,27 @@ public class PostService {
         Post post = new Post();
         post.setTitle(postDTO.getTitle());
         post.setContent(postDTO.getContent());
-        post.setCreatedAt(LocalDateTime.now()); // Définir createdAt à maintenant
-
-        // Récupérer et assigner le sujet
-        if (postDTO.getSubject() != null && postDTO.getSubject().getName() != null) {
-            Subject subject = subjectRepository.findByName(postDTO.getSubject().getName())
-                    .orElseThrow(() -> new RuntimeException("Subject not found"));
+        post.setCreatedAt(LocalDateTime.now());
+    
+        // Récupérer et assigner le sujet à partir de subject_Id
+        Long subjectId = postDTO.getSubject_Id();
+        if (subjectId != null) {
+            Subject subject = subjectRepository.findById(subjectId)
+                    .orElseThrow(() -> new RuntimeException("Subject not found with ID: " + subjectId));
             post.setSubject(subject);
         }
-
-        // Récupérer et assigner l'auteur
-        if (postDTO.getAuthor() != null && postDTO.getAuthor().getEmail() != null) {
-            User author = userRepository.findByEmail(postDTO.getAuthor().getEmail())
-                    .orElseThrow(() -> new RuntimeException("Author not found"));
+    
+        // Récupérer et assigner l'auteur à partir de author_Id
+        Long authorId = postDTO.getAuthor_Id();
+        if (authorId != null) {
+            User author = userRepository.findById(authorId)
+                    .orElseThrow(() -> new RuntimeException("Author not found with ID: " + authorId));
             post.setAuthor(author);
         }
-
+    
         // Sauvegarder le post
         Post savedPost = postRepository.save(post);
-
+    
         // Convertir le post sauvegardé en DTO pour le retour
         return convertToDTO(savedPost);
     }

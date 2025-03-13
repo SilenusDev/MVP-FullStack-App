@@ -1,7 +1,6 @@
 package com.openclassrooms.api.dto;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class PostDTO {
     private Long id;
@@ -10,8 +9,10 @@ public class PostDTO {
     private LocalDateTime createdAt;
     private UserDTO author;
     private SubjectDTO subject;
+    private Long author_Id;
+    private Long subject_Id;
 
-    // Getters and Setters
+    // Getters and Setters existants
     public Long getId() {
         return id;
     }
@@ -58,6 +59,23 @@ public class PostDTO {
 
     public void setSubject(SubjectDTO subject) {
         this.subject = subject;
+    }
+
+    // Nouveaux getters et setters pour les IDs
+    public Long getAuthor_Id() {
+        return author_Id;
+    }
+
+    public void setAuthor_Id(Long author_Id) {
+        this.author_Id = author_Id;
+    }
+
+    public Long getSubject_Id() {
+        return subject_Id;
+    }
+
+    public void setSubject_Id(Long subject_Id) {
+        this.subject_Id = subject_Id;
     }
 }
 
