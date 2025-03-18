@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS `user_subject` (
   KEY `FKj98pyhwufif7d92fkjpn1tft4` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
 -- Ajout des contraintes étrangères après création de toutes les tables
 ALTER TABLE `posts`
   ADD CONSTRAINT `fk_posts_author` FOREIGN KEY (`author_id`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
@@ -80,6 +81,8 @@ ALTER TABLE `subscriptions`
 ALTER TABLE `user_subject`
   ADD CONSTRAINT `FKj98pyhwufif7d92fkjpn1tft4` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `FKjxs16fhmhx6poqijtbq2joxen` FOREIGN KEY (`subject_id`) REFERENCES `subjects` (`id`);
+
+
 
 -- Insertion des données dans l'ordre des dépendances
 INSERT INTO `users` (`id`, `name`, `email`, `password`, `role`, `created_at`, `updated_at`) VALUES

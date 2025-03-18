@@ -37,6 +37,7 @@ public class AuthController {
         this.userService = userService;
     }
 
+   
     @Operation(summary = "Register a new user", description = "Registers a new user and returns a JWT token")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "User registered successfully",
