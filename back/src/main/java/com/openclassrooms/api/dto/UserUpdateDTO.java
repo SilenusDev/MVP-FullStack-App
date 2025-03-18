@@ -7,14 +7,17 @@ public class UserUpdateDTO {
     private Long id;
     private String name;
     private String email;
+    private String password;
+    
     // Constructeurs, getters et setters
     public UserUpdateDTO() {
     }
 
-    public UserUpdateDTO(Long id, String name, String email) {
+    public UserUpdateDTO(Long id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
     }
 
     public Long getId() {
@@ -39,5 +42,13 @@ public class UserUpdateDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+    
+    public String getPassword() {
+        return password;
+    }
+    
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

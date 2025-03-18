@@ -48,3 +48,10 @@ Start the application:
 
 The frontend will be available at:
 http://localhost:4200
+
+## basic connection
+email
+> user@user.com
+
+password 
+> user1234
