@@ -19,6 +19,14 @@ It provides features such as:
 In back folder
 > cd back
 
+Create an .env file at the root of the back folder and fill in the database variables 
+replace XXXX by your own variables
+
+DATABASE_URL=jdbc:mysql://localhost:3306/mvp?serverTimezone=UTC
+DATABASE_USERNAME=xxxxx
+DATABASE_PASSWORD=xxxxx
+JWT_SECRET=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 Install dependencies:
 > mvn clean install
 
