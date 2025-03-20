@@ -34,7 +34,7 @@ Run the application:
 > mvn spring-boot\:run or ./mvnw spring-boot:run 
 
 The API documentation (Swagger) is available at:
-http://localhost:3001/swagger-ui/index.html#/subject-controller/getAllSubjects
+http://localhost:3001/swagger-ui/index.html#/
 
 ## Install Frontend
 In front folder 
