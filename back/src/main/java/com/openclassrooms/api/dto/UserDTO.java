@@ -1,4 +1,3 @@
-// src/main/java/com/openclassrooms/api/dto/UserDTO.java
 package com.openclassrooms.api.dto;
 
 import java.time.LocalDateTime;
@@ -6,7 +5,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.openclassrooms.api.models.User;
-import com.openclassrooms.api.models.Subscription;
 
 public class UserDTO {
     private Long id;
@@ -32,8 +30,7 @@ public class UserDTO {
                     .map(subscription -> SubjectDTO.fromEntity(subscription.getSubject()))
                     .collect(Collectors.toList())
             );
-        }
-        
+        }       
         return dto;
     }
 

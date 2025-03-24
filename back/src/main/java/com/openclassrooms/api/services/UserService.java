@@ -147,28 +147,7 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    // public Optional<UserUpdateDTO> updateUser(UserUpdateDTO userUpdateDTO) {
 
-    //     Optional<User> userOptional = userRepository.findById(userUpdateDTO.getId());
-
-    //     if (userOptional.isPresent()) {
-    //         User user = userOptional.get();
-
-
-    //         user.setName(userUpdateDTO.getName());
-    //         user.setEmail(userUpdateDTO.getEmail());
-
-    //         try {
-    //             userRepository.save(user);
-    //             return Optional.of(userUpdateDTO);
-    //         } catch (Exception e) {
-
-    //             throw e; // ou retournez une Optional.empty() selon votre logique
-    //         }
-    //     } else {
-    //         return Optional.empty();
-    //     }
-    // }
 
     public Optional<UserUpdateDTO> updateUser(UserUpdateDTO userUpdateDTO) {
         Optional<User> userOptional = userRepository.findById(userUpdateDTO.getId());

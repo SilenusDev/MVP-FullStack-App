@@ -1,4 +1,3 @@
-// src/main/java/com/openclassrooms/api/dto/SubjectDTO.java
 package com.openclassrooms.api.dto;
 
 import com.openclassrooms.api.models.Subject;
@@ -25,6 +24,7 @@ public class SubjectDTO {
         dto.setDescription(subject.getDescription());
         return dto;
     }
+
 
     public Long getId() {
         return id;
