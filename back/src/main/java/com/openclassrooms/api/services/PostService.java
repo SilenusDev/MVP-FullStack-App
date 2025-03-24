@@ -4,6 +4,7 @@ import com.openclassrooms.api.dto.CommentDTO;
 import com.openclassrooms.api.dto.PostDTO;
 import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.dto.UserDTO;
+import com.openclassrooms.api.mappers.PostMapper;
 import com.openclassrooms.api.models.Comment;
 import com.openclassrooms.api.models.Post;
 import com.openclassrooms.api.models.Subject;
@@ -39,6 +40,9 @@ public class PostService {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private PostMapper postMapper;
+
     public List<PostDTO> getAllPosts() {
         return postRepository.findAll()
                 .stream()
@@ -52,18 +56,15 @@ public class PostService {
     }
 
     public List<PostDTO> getPostsByUserSubscription(Long userId) {
+        // Récupérer les posts via le repository
+        List<Post> posts = postRepository.findBySubject_Subscriptions_UserId(userId);
 
-        List<Object[]> results = postRepository.findPostsByUserSubscription(userId);
-
-        // afficher les résultats
-        results.forEach(result -> {
-            for (Object o : result) {
-
-            }
-        });
-
-        return results.stream().map(this::mapToPostDTO).collect(Collectors.toList());
+        // Convertir les posts en DTOs avec MapStruct
+        return posts.stream()
+                .map(postMapper::toDTO)
+                .collect(Collectors.toList());
     }
+
 
     public PostDTO createPost(PostDTO postDTO) {
         // Création d'un nouveau post

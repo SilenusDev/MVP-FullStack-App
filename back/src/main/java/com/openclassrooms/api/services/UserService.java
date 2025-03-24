@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.dto.UserDTO;
 import com.openclassrooms.api.dto.UserUpdateDTO;
+import com.openclassrooms.api.mappers.UserMapper;
 import com.openclassrooms.api.models.Subject;
 import com.openclassrooms.api.models.User;
 import com.openclassrooms.api.repositories.UserRepository;
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -35,19 +37,20 @@ public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JWTService jwtService;
     private final PasswordEncoder passwordEncoder;
-    // private final UserRepository userRepository;
-    private final SubscriptionRepository subscriptionRepository; // Ajout de la dépendance
+
+    private final UserMapper userMapper; // Ajout de la dépendance
 
     public UserService(AuthenticationManager authenticationManager,
                       JWTService jwtService,
                       PasswordEncoder passwordEncoder,
                       UserRepository userRepository,
-                      SubscriptionRepository subscriptionRepository) { // Injection de la dépendance
+                      SubscriptionRepository subscriptionRepository,
+                      UserMapper userMapper) { // Injection de la dépendance
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
-        this.subscriptionRepository = subscriptionRepository;
+        this.userMapper = userMapper; // Initialisation de la dépendance
     }
 
     public String register(String name, String email, String password) {
@@ -99,46 +102,58 @@ public class UserService {
     }
 
     public UserDTO getCurrentUser(String email) {
-
-        // Récupérer l'utilisateur
         User user = userRepository.findByEmail(email)
-            .orElseThrow(() -> {
-                return new RuntimeException("User not found");
-            });
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Charge les sujets abonnés
+        User userWithSubjects = userRepository.findWithSubscribedSubjectsById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        return userMapper.toDTO(userWithSubjects);
+    }
+
+
+    // public UserDTO getCurrentUser(String email) {
+
+    //     // Récupérer l'utilisateur
+    //     User user = userRepository.findByEmail(email)
+    //         .orElseThrow(() -> {
+    //             return new RuntimeException("User not found");
+    //         });
 
     
-        // Récupérer les IDs des sujets
-        Map<String, Object> userMap = userRepository.findUserWithSubscribedSubjectIds(user.getId())
-            .orElseThrow(() -> new RuntimeException("Sujets non trouvés pour l'utilisateur avec ID: " + user.getId()));
+    //     // Récupérer les IDs des sujets
+    //     Map<String, Object> userMap = userRepository.findUserWithSubscribedSubjectIds(user.getId())
+    //         .orElseThrow(() -> new RuntimeException("Sujets non trouvés pour l'utilisateur avec ID: " + user.getId()));
   
 
         
-        // Accéder à la chaîne contenant les IDs
-        String subscribedSubjectIds = (String) userMap.get("subscribed_subject_ids");
+    //     // Accéder à la chaîne contenant les IDs
+    //     String subscribedSubjectIds = (String) userMap.get("subscribed_subject_ids");
  
     
-        // Convertir les IDs de sujets en une liste de SubjectDTO
-        List<SubjectDTO> subscribedSubjects = 
-            Arrays.stream(subscribedSubjectIds.split(","))
-                  .map((String id) -> {
-                      Subject subject = subjectRepository.findById(Long.parseLong(id)).orElse(null);
-                      return subject;
-                  })
-                  .filter(subject -> subject != null) // Ignorer les sujets non trouvés
-                  .map(SubjectDTO::fromEntity)
-                  .collect(Collectors.toList());
+    //     // Convertir les IDs de sujets en une liste de SubjectDTO
+    //     List<SubjectDTO> subscribedSubjects = 
+    //         Arrays.stream(subscribedSubjectIds.split(","))
+    //               .map((String id) -> {
+    //                   Subject subject = subjectRepository.findById(Long.parseLong(id)).orElse(null);
+    //                   return subject;
+    //               })
+    //               .filter(subject -> subject != null) // Ignorer les sujets non trouvés
+    //               .map(SubjectDTO::fromEntity)
+    //               .collect(Collectors.toList());
         
     
-        // Créer et retourner un DTO de l'utilisateur
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(user.getId());
-        userDTO.setName(user.getName());
-        userDTO.setEmail(user.getEmail());
-        userDTO.setCreatedAt(user.getCreated_at());
-        userDTO.setSubscribedSubjects(subscribedSubjects);
+    //     // Créer et retourner un DTO de l'utilisateur
+    //     UserDTO userDTO = new UserDTO();
+    //     userDTO.setId(user.getId());
+    //     userDTO.setName(user.getName());
+    //     userDTO.setEmail(user.getEmail());
+    //     userDTO.setCreatedAt(user.getCreated_at());
+    //     userDTO.setSubscribedSubjects(subscribedSubjects);
     
-        return userDTO;
-    }
+    //     return userDTO;
+    // }
     
     
 

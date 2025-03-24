@@ -54,4 +54,4 @@ email
 > user@user.com
 
 password 
-> user1234
+> User@1234

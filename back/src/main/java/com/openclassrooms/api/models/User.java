@@ -25,6 +25,7 @@ public class User {
     @JsonIgnore
     private String role;
     
+    @Column(name = "created_at")
     private LocalDateTime created_at;
     private LocalDateTime updated_at;
 
@@ -39,7 +40,7 @@ public class User {
 
     @ManyToMany
     @JoinTable(
-        name = "user_subject",
+        name = "subscriptions", // Anciennement "user_subject"
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "subject_id")
     )

@@ -21,5 +21,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
                 "JOIN p.author u " +
                 "WHERE sub.user.id = :userId")
     List<Object[]> findPostsByUserSubscription(@Param("userId") Long userId);
+
+    List<Post> findBySubject_Subscriptions_UserId(Long userId);
    
 }

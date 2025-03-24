@@ -1,7 +1,10 @@
 package com.openclassrooms.api.dto;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import com.openclassrooms.api.models.Subject;
 
+@Data
 public class SubjectDTO {
     private Long id;
     private String name;
@@ -25,28 +28,4 @@ public class SubjectDTO {
         return dto;
     }
 
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 }

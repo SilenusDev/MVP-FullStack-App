@@ -95,7 +95,7 @@ public class AuthController {
             schema = @Schema(implementation = LoginRequestDTO.class),
             examples = @ExampleObject(
                 name = "Login Example",
-                value = "{\"email\": \"user@user.com\", \"password\": \"user1234\"}"
+                value = "{\"email\": \"user@user.com\", \"password\": \"User@1234\"}"
             )
         )
     ) LoginRequestDTO credentials) {
@@ -122,24 +122,9 @@ public class AuthController {
     })
     @GetMapping("/me")
     public ResponseEntity<UserDTO> getCurrentUser(Authentication authentication) {
-        // Récupérer l'email de l'utilisateur authentifié
         String email = authentication.getName();
-        
-        // Récupérer l'utilisateur à partir de l'email
-        Optional<User> userOptional = userService.findByEmail(email);
-        
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            
-            // Transformer l'utilisateur en UserDTO
-            UserDTO userDTO = UserDTO.fromEntity(user);
-            
-            // Retourner la réponse avec le UserDTO
-            return ResponseEntity.ok(userDTO);
-        } else {
-            // Si l'utilisateur n'est pas trouvé, retourner une erreur 404
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        UserDTO userDTO = userService.getCurrentUser(email);
+        return ResponseEntity.ok(userDTO);
     }
 }
 
