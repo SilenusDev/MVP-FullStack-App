@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+
 
 import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.dto.UserDTO;
@@ -25,13 +25,4 @@ public interface UserMapper {
     }
 }
 
-// @Mapper(componentModel = "spring")
-// public interface UserMapper {
-//     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-//     @Mapping(source = "created_at", target = "createdAt")
-//     UserDTO toDto(User user);
-
-//     @Mapping(source = "createdAt", target = "created_at")
-//     User toEntity(UserDTO userDto);
-// }

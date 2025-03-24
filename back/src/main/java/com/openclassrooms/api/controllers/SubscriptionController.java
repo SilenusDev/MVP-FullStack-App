@@ -14,13 +14,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/subjects")
@@ -29,23 +25,6 @@ public class SubscriptionController {
     @Autowired
     private SubscriptionService subscriptionService;
 
-    // /**
-    //  * Récupère les sujets auxquels l'utilisateur est abonné.
-    //  */
-    // @Operation(summary = "Get subscribed subjects", description = "Returns a list of subjects the user is subscribed to")
-    // @ApiResponses(value = {
-    //     @ApiResponse(responseCode = "200", description = "Successfully retrieved list of subscribed subjects",
-    //         content = @Content(mediaType = "application/json", schema = @Schema(implementation = SubjectDTO.class))),
-    //     @ApiResponse(responseCode = "401", description = "Unauthorized",
-    //         content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
-    //     @ApiResponse(responseCode = "500", description = "Internal server error",
-    //         content = @Content(mediaType = "application/json", schema = @Schema(implementation = String.class)))
-    // })
-    // @GetMapping("/subscriptions")
-    // public List<SubjectDTO> getSubscribedSubjects(@AuthenticationPrincipal UserDetails userDetails) {
-    //     Long userId = Long.parseLong(userDetails.getUsername());
-    //     return subscriptionService.getSubscribedSubjects(userId);
-    // }
 
     /**
      * Abonne un utilisateur à un sujet.

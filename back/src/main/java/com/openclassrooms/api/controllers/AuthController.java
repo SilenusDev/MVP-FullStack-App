@@ -8,10 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import com.openclassrooms.api.dto.LoginRequestDTO;
 import com.openclassrooms.api.dto.RegisterRequest;
 import com.openclassrooms.api.dto.RegisterResponseDTO;
-import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.dto.UserDTO;
 import com.openclassrooms.api.models.ErrorResponse;
-import com.openclassrooms.api.models.User;
 import com.openclassrooms.api.services.UserService;
 // import com.openclassrooms.api.services.SubjectService;
 
@@ -23,10 +21,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/auth")

@@ -1,11 +1,9 @@
 package com.openclassrooms.api.services;
 
-import com.openclassrooms.api.dto.CommentDTO;
 import com.openclassrooms.api.dto.PostDTO;
 import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.dto.UserDTO;
 import com.openclassrooms.api.mappers.PostMapper;
-import com.openclassrooms.api.models.Comment;
 import com.openclassrooms.api.models.Post;
 import com.openclassrooms.api.models.Subject;
 import com.openclassrooms.api.models.User;
@@ -13,16 +11,11 @@ import com.openclassrooms.api.repositories.CommentRepository;
 import com.openclassrooms.api.repositories.PostRepository;
 import com.openclassrooms.api.repositories.SubjectRepository;
 import com.openclassrooms.api.repositories.UserRepository;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

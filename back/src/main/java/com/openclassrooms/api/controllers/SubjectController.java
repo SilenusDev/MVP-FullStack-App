@@ -4,7 +4,6 @@ import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.models.ErrorResponse;
 import com.openclassrooms.api.services.SubjectService;
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

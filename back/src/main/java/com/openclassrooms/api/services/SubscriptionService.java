@@ -3,16 +3,13 @@ package com.openclassrooms.api.services;
 import com.openclassrooms.api.dto.SubjectDTO;
 import com.openclassrooms.api.models.Subject;
 import com.openclassrooms.api.models.Subscription;
-import com.openclassrooms.api.models.SubscriptionId;
 import com.openclassrooms.api.models.User;
 import com.openclassrooms.api.repositories.SubjectRepository;
 import com.openclassrooms.api.repositories.SubscriptionRepository;
 import com.openclassrooms.api.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.stream.Collectors;
